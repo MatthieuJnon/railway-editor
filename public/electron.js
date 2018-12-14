@@ -1,28 +1,28 @@
-const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
 
-const path = require("path");
-const url = require("url");
-const isDev = require("electron-is-dev");
+const path = require('path')
+const url = require('url')
+const isDev = require('electron-is-dev')
 
-let mainWindow = null;
+let mainWindow = null
 
-const gotTheLock = app.requestSingleInstanceLock();
+const gotTheLock = app.requestSingleInstanceLock()
 
 if (!gotTheLock) {
-  app.quit();
+  app.quit()
 } else {
-  app.on("second-instance", (event, commandLine, workingDirectory) => {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
     }
-  });
+  })
 
   // Create myWindow, load the rest of the app, etc...
-  app.on("ready", createWindow);
+  app.on('ready', createWindow)
 }
 
 function createWindow() {
@@ -31,27 +31,27 @@ function createWindow() {
     height: 750,
     frame: false,
     show: false,
-    resizable: false
-  });
+    resizable: isDev ? true : false,
+  })
   mainWindow.loadURL(
     isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
-  );
-  mainWindow.once("ready-to-show", () => {
-    mainWindow.show();
-  });
-  mainWindow.on("closed", () => (mainWindow = null));
+      ? 'http://localhost:3000'
+      : `file://${path.join(__dirname, '../build/index.html')}`
+  )
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
+  mainWindow.on('closed', () => (mainWindow = null))
 }
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
   }
-});
+})
 
-app.on("activate", () => {
+app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
-});
+})

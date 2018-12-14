@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "components/*": ["src/components/*"],
+    "data/*": ["src/data/*"],
+    "res/*": ["src/res/*"],
+    "theme/*": ["src/theme/*"]
+  }
+}

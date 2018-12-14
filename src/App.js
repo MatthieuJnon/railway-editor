@@ -1,8 +1,12 @@
+import GlobalStyle, { theme } from 'theme/globalStyle'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import reducer from 'reducer'
 import 'res/stylesheet/main.css'
+import reducer from 'reducer'
+import StartMenu from 'components/StartMenu'
+import { ThemeProvider } from 'styled-components'
+
 require('dotenv').config()
 
 const store = createStore(reducer)
@@ -10,11 +14,13 @@ const store = createStore(reducer)
 class App extends Component {
   render() {
     return (
-      <React.StrictMode>
-        <Provider store={store}>
-          <div className="App" />
-        </Provider>
-      </React.StrictMode>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <GlobalStyle />
+
+            <StartMenu />
+          </Provider>
+        </ThemeProvider>
     )
   }
 }
