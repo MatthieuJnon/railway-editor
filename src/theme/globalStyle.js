@@ -7,6 +7,8 @@ export default createGlobalStyle`
       props.theme.backgroundColor} 1px, transparent 1px),
       linear-gradient(to bottom, ${props =>
         props.theme.backgroundColor} 1px, transparent 1px);
+    font-family: ${props => props.theme.fontFamily};
+    user-select: none;
   }
 `
 export const theme = {
@@ -14,5 +16,5 @@ export const theme = {
   textPrimary: '#e8f2ff',
   textSecondary: '#b6d8ff',
   backgroundColor: '#fafafa',
-  fontFamily: 'MontserratRegular',
+  fontFamily: 'Montserrat',
 }
