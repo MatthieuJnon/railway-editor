@@ -24,6 +24,7 @@ const Title = styled.h1`
 const MenuButton = styled.button`
   color: ${props => props.theme.textSecondary};
   font-weight: 400;
+  font-family: ${props => props.theme.fontFamily};
   position: absolute;
   left: 69px;
   font-size: 2.5rem;
@@ -41,12 +42,21 @@ const LoadMap = styled(MenuButton)`
   top: 250px;
 `
 
+const HandleBar = styled.div`
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  z-index: 1000;
+  border: 1px solid black;
+  width: 45vw;
+  height: 120px;
+`
+
 class MainMenu extends Component {
   render() {
     return (
       <React.Fragment>
+        <HandleBar />
         <Background />
-
         <Title>Railway Editor</Title>
         <NewMap>New map</NewMap>
         <LoadMap>Load map</LoadMap>
