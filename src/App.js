@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { createStore } from 'redux'
 
 import LeftMenu from 'Menu/LeftMenu'
-import CloseIcon from 'components/icons/Close'
 import 'res/stylesheet/main.css'
 import reducer from 'reducer'
 
@@ -20,10 +19,6 @@ const Wrapper = styled.div`
   width: 100vh;
 `
 
-const Icon = styled.div`
-  position: absolute;
-`
-
 class App extends Component {
   render() {
     return (
@@ -32,9 +27,6 @@ class App extends Component {
           <GlobalStyle />
           <Wrapper>
             <LeftMenu />
-            <Icon>
-              <CloseIcon />
-            </Icon>
           </Wrapper>
         </Provider>
       </ThemeProvider>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import CloseIcon from 'components/icons/Close'
+
 const Background = styled.div`
   height: 120vh;
   width: 55vw;
@@ -45,22 +47,54 @@ const LoadMap = styled(MenuButton)`
 const HandleBar = styled.div`
   -webkit-user-select: none;
   -webkit-app-region: drag;
+  pointer-events: none;
   z-index: 1000;
-  border: 1px solid black;
   width: 45vw;
   height: 120px;
+  position: absolute;
+`
+
+const Icon = styled.div`
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  -webkit-app-region: no-drag;
 `
 
 class MainMenu extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      closeButtonHovered: false,
+    }
+
+    this.handleHoverCloseButton = this.handleHoverCloseButton.bind(this)
+  }
+
+  handleHoverCloseButton() {
+    this.setState({
+      closeButtonHovered: !this.state.closeButtonHovered,
+    })
+  }
+
   render() {
     return (
-      <React.Fragment>
-        <HandleBar />
+      <header>
         <Background />
         <Title>Railway Editor</Title>
         <NewMap>New map</NewMap>
         <LoadMap>Load map</LoadMap>
-      </React.Fragment>
+        <Icon
+          onMouseEnter={this.handleHoverCloseButton}
+          onMouseLeave={this.handleHoverCloseButton}
+        >
+          <CloseIcon color={this.state.closeButtonHovered ? '#ffffff' : ''} />
+        </Icon>
+        <HandleBar />
+      </header>
     )
   }
 }
