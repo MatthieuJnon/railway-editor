@@ -65,6 +65,8 @@ const HandleBar = styled.div`
 
 const Icon = styled.div`
   transition: ${props => props.theme.menuTransition};
+  /* the icon needs to translate because translation of parent component breaks position:fixed
+  So we cant use it */
   transform: ${props => (props.screen === 'editor' ? 'translateX(40vw)' : '')};
   position: absolute;
   left: 30px;

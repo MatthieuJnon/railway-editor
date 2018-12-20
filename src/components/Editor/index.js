@@ -13,20 +13,22 @@ const EditorView = styled.div`
 `
 
 const EditorZone = styled.div`
-  top: 50%;
+  top: 50vh;
   left: 50%;
   position: absolute;
   height: 50vh;
   width: 40vw;
-  border: 3px solid black;
+  /* border: 3px solid black; */
 `
 
 const Station = styled.div`
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: black;
+  width: 28px;
+  height: 28px;
+  border-radius: 20041997px;
+  border: 8px solid ${props => props.theme.primary};
 `
+
 
 class Editor extends Component {
   render() {
@@ -35,7 +37,12 @@ class Editor extends Component {
         <EditorZone>
           {this.props.stations.map(station => (
             <Draggable
-              bounds="parent"
+              bounds={{
+                left: -document.documentElement.clientWidth * 0.4,
+                top: -document.documentElement.clientHeight * 0.5,
+                right: document.documentElement.clientWidth * 0.4,
+                bottom: document.documentElement.clientHeight * 0.48,
+              }}
               disabled={this.props.screen !== 'editor'}
               defaultPosition={{
                 x: station.position[0],
@@ -43,7 +50,7 @@ class Editor extends Component {
               }}
               key={station.id}
             >
-              <Station key={station.id}/>
+              <Station key={station.id} />
             </Draggable>
           ))}
         </EditorZone>
@@ -55,7 +62,7 @@ class Editor extends Component {
 const mapStateToProps = state => ({
   stations: state.map.stations,
   lines: state.map.lines,
-  screen: state.app.screen
+  screen: state.app.screen,
 })
 
 export default connect(mapStateToProps)(Editor)
