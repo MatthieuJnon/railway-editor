@@ -34,6 +34,13 @@ const MenuButton = styled.button`
   letter-spacing: 0.1em;
   border: none;
   background: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    color: ${props => props.theme.white};
+    transform: translateX(2px);
+  }
 `
 
 const NewMap = styled(MenuButton)`
@@ -60,6 +67,7 @@ const Icon = styled.div`
   top: 30px;
   width: 20px;
   height: 20px;
+  cursor: pointer;
   -webkit-app-region: no-drag;
 `
 
@@ -72,12 +80,19 @@ class MainMenu extends Component {
     }
 
     this.handleHoverCloseButton = this.handleHoverCloseButton.bind(this)
+    this.closeWindow = this.closeWindow.bind(this)
   }
 
   handleHoverCloseButton() {
     this.setState({
       closeButtonHovered: !this.state.closeButtonHovered,
     })
+  }
+
+  closeWindow() {
+    const win = window.require('electron').remote.getCurrentWindow()
+
+    win.close()
   }
 
   render() {
@@ -90,6 +105,7 @@ class MainMenu extends Component {
         <Icon
           onMouseEnter={this.handleHoverCloseButton}
           onMouseLeave={this.handleHoverCloseButton}
+          onClick={this.closeWindow}
         >
           <CloseIcon color={this.state.closeButtonHovered ? '#ffffff' : ''} />
         </Icon>
