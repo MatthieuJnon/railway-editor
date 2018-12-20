@@ -9,6 +9,8 @@ export default createGlobalStyle`
         props.theme.gridColor} 1px, transparent 1px);
     font-family: ${props => props.theme.fontFamily};
     user-select: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 `
 export const theme = {

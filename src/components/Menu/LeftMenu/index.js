@@ -71,6 +71,11 @@ const Icon = styled.div`
   -webkit-app-region: no-drag;
 `
 
+const Header = styled.header`
+  height: 100vh;
+  width: 50vw;
+`
+
 class MainMenu extends Component {
   constructor(props) {
     super(props)
@@ -97,7 +102,7 @@ class MainMenu extends Component {
 
   render() {
     return (
-      <header>
+      <Header>
         <Background />
         <Title>Railway Editor</Title>
         <NewMap>New map</NewMap>
@@ -110,7 +115,7 @@ class MainMenu extends Component {
           <CloseIcon color={this.state.closeButtonHovered ? '#ffffff' : ''} />
         </Icon>
         <HandleBar />
-      </header>
+      </Header>
     )
   }
 }

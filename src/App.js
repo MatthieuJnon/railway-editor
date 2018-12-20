@@ -5,7 +5,8 @@ import { Provider } from 'react-redux'
 import styled from 'styled-components'
 import { createStore } from 'redux'
 
-import LeftMenu from 'Menu/LeftMenu'
+import LeftMenu from 'components/Menu/LeftMenu'
+import Editor from 'components/Editor'
 import 'res/stylesheet/main.css'
 import reducer from 'reducer'
 
@@ -16,7 +17,7 @@ const store = createStore(reducer)
 const Wrapper = styled.div`
   position: absolute;
   height: 100vh;
-  width: 100vh;
+  width: 100vw;
 `
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
           <GlobalStyle />
           <Wrapper>
             <LeftMenu />
+            <Editor />
           </Wrapper>
         </Provider>
       </ThemeProvider>
