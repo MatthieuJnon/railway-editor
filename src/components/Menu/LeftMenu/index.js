@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
+import { changeScreen } from 'actions'
 import CloseIcon from 'components/icons/Close'
 
 const Background = styled.div`
@@ -36,7 +38,7 @@ const MenuButton = styled.button`
   background: none;
   outline: none;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
   &:hover {
     color: ${props => props.theme.white};
     transform: translateX(2px);
@@ -62,6 +64,8 @@ const HandleBar = styled.div`
 `
 
 const Icon = styled.div`
+  transition: ${props => props.theme.menuTransition};
+  transform: ${props => (props.screen === 'editor' ? 'translateX(40vw)' : '')};
   position: absolute;
   left: 30px;
   top: 30px;
@@ -86,6 +90,7 @@ class MainMenu extends Component {
 
     this.handleHoverCloseButton = this.handleHoverCloseButton.bind(this)
     this.closeWindow = this.closeWindow.bind(this)
+    this.handleNewMap = this.handleNewMap.bind(this)
   }
 
   handleHoverCloseButton() {
@@ -100,17 +105,22 @@ class MainMenu extends Component {
     win.close()
   }
 
+  handleNewMap() {
+    this.props.changeScreen('editor')
+  }
+
   render() {
     return (
       <Header>
         <Background />
         <Title>Railway Editor</Title>
-        <NewMap>New map</NewMap>
+        <NewMap onClick={this.handleNewMap}>New map</NewMap>
         <LoadMap>Load map</LoadMap>
         <Icon
           onMouseEnter={this.handleHoverCloseButton}
           onMouseLeave={this.handleHoverCloseButton}
           onClick={this.closeWindow}
+          screen={this.props.screen}
         >
           <CloseIcon color={this.state.closeButtonHovered ? '#ffffff' : ''} />
         </Icon>
@@ -120,4 +130,15 @@ class MainMenu extends Component {
   }
 }
 
-export default MainMenu
+const mapStateToProps = state => ({
+  screen: state.app.screen,
+})
+
+const mapDispatchToProps = {
+  changeScreen: changeScreen,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainMenu)

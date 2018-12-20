@@ -1,4 +1,4 @@
-import { createGlobalStyle, keyframes } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
   body {
@@ -20,6 +20,7 @@ export const theme = {
   gridColor: '#fafafa',
   white: '#ffffff',
   fontFamily: 'Montserrat',
+  menuTransition: 'transform 0.4s ease',
 }
 
 export const animations = {}

@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import styled from 'styled-components'
 import { createStore } from 'redux'
+import { connect } from 'react-redux'
 
 import LeftMenu from 'components/Menu/LeftMenu'
 import Editor from 'components/Editor'
@@ -12,13 +13,35 @@ import reducer from 'reducer'
 
 require('dotenv').config()
 
-const store = createStore(reducer)
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
-const Wrapper = styled.div`
+const StateScroller = styled.div`
   position: absolute;
   height: 100vh;
   width: 100vw;
+  transition: ${props => props.theme.menuTransition};
+  transform: ${props => (props.screen === 'editor' ? 'translateX(-40vw)' : '')};
 `
+
+class ActualApp extends Component {
+  render() {
+    return (
+      <StateScroller screen={this.props.screen}>
+        <LeftMenu />
+        <Editor />
+      </StateScroller>
+    )
+  }
+}
+
+const mapStateToProps = state => ({
+  screen: state.app.screen,
+})
+
+ActualApp = connect(mapStateToProps)(ActualApp)
 
 class App extends Component {
   render() {
@@ -26,10 +49,7 @@ class App extends Component {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <GlobalStyle />
-          <Wrapper>
-            <LeftMenu />
-            <Editor />
-          </Wrapper>
+          <ActualApp />
         </Provider>
       </ThemeProvider>
     )
