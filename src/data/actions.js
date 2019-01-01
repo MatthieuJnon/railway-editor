@@ -21,6 +21,15 @@ export const addStationToLine = (stationId, lineId, index) => {
   }
 }
 
+export const moveStation = (stationId, newPosition) => {
+  return {
+    type: 'MOVE_STATION',
+    stationId: stationId,
+    newPosition: newPosition
+  }
+}
+
 export const ADD_STATION = 'ADD_STATION'
 export const ADD_LINE = 'ADD_LINE'
 export const ADD_STATION_TO_LINE = 'ADD_STATION_TO_LINE'
+export const MOVE_STATION = 'MOVE_STATION'

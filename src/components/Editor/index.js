@@ -3,6 +3,9 @@ import Draggable from 'react-draggable'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
+import { moveStation } from 'data/actions'
+import Line from 'components/Editor/Line'
+
 const EditorView = styled.div`
   height: 100vh;
   width: 80vw;
@@ -10,15 +13,6 @@ const EditorView = styled.div`
   position: absolute;
   top: 0;
   left: 50vw;
-`
-
-const EditorZone = styled.div`
-  top: 50vh;
-  left: 50%;
-  position: absolute;
-  height: 50vh;
-  width: 40vw;
-  /* border: 3px solid black; */
 `
 
 const Station = styled.div`
@@ -29,31 +23,68 @@ const Station = styled.div`
   border: 8px solid ${props => props.theme.primary};
 `
 
+const EditorSvg = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 98vh;
+  width: 80vw;
+`
 
 class Editor extends Component {
+  constructor(props) {
+    super(props)
+
+    this.handleStationDrag = this.handleStationDrag.bind(this)
+  }
+
+  handleStationDrag(event, data) {
+    this.props.moveStation(data.node.attributes['data-id'].value, [
+      data.x,
+      data.y,
+    ])
+  }
+
   render() {
+    let linesKeys = Object.keys(this.props.lines)
+    let lines = []
+    linesKeys.forEach(element => {
+      let coords = this.props.lines[element].order
+      coords = coords.map(stationIndex => {
+        return this.props.stations[stationIndex].position
+      })
+      lines.push({
+        coords: coords,
+        color: this.props.lines[element].color,
+      })
+    })
+
+    lines = lines.map((line, index) => {
+      return <Line coords={line.coords} color={line.color} key={index} />
+    })
+
+    const clientHeight = document.documentElement.clientHeight
+    const clientWidth = document.documentElement.clientWidth
+
     return (
       <EditorView>
-        <EditorZone>
-          {this.props.stations.map(station => (
-            <Draggable
-              bounds={{
-                left: -document.documentElement.clientWidth * 0.4,
-                top: -document.documentElement.clientHeight * 0.5,
-                right: document.documentElement.clientWidth * 0.4,
-                bottom: document.documentElement.clientHeight * 0.48,
-              }}
-              disabled={this.props.screen !== 'editor'}
-              defaultPosition={{
-                x: station.position[0],
-                y: station.position[1],
-              }}
-              key={station.id}
-            >
-              <Station key={station.id} />
-            </Draggable>
-          ))}
-        </EditorZone>
+        <EditorSvg viewBox={`0 0 ${clientWidth * 0.8} ${clientHeight * 0.98}`}>
+          {lines}
+        </EditorSvg>
+        {Object.keys(this.props.stations).map(stationIndex => (
+          <Draggable
+            bounds="parent"
+            disabled={this.props.screen !== 'editor'}
+            defaultPosition={{
+              x: this.props.stations[stationIndex].position[0],
+              y: this.props.stations[stationIndex].position[1],
+            }}
+            onDrag={this.handleStationDrag}
+            key={stationIndex}
+          >
+            <Station data-id={stationIndex} />
+          </Draggable>
+        ))}
       </EditorView>
     )
   }
@@ -65,4 +96,11 @@ const mapStateToProps = state => ({
   screen: state.app.screen,
 })
 
-export default connect(mapStateToProps)(Editor)
+const mapDispatchToProps = {
+  moveStation,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Editor)
