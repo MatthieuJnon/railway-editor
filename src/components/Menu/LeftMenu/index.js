@@ -13,6 +13,7 @@ const Background = styled.div`
   position: absolute;
   top: -10vh;
   left: -10vw;
+  box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.22);
 `
 
 const Title = styled.h1`
