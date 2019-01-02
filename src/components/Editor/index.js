@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { moveStation } from 'data/actions'
+import { getLineColors } from 'data'
 import Line from 'components/Editor/Line'
 
 const EditorView = styled.div`
@@ -20,7 +21,7 @@ const Station = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 20041997px;
-  border: 8px solid ${props => props.theme.primary};
+  border: 8px solid ${props => props.color};
 `
 
 const EditorSvg = styled.svg`
@@ -46,20 +47,22 @@ class Editor extends Component {
   }
 
   render() {
-    let linesKeys = Object.keys(this.props.lines)
-    let lines = []
+    const { stations, lines } = this.props
+
+    let linesKeys = Object.keys(lines)
+    let linesToRender = []
     linesKeys.forEach(element => {
-      let coords = this.props.lines[element].order
+      let coords = lines[element].order
       coords = coords.map(stationIndex => {
-        return this.props.stations[stationIndex].position
+        return stations[stationIndex].position
       })
-      lines.push({
+      linesToRender.push({
         coords: coords,
-        color: this.props.lines[element].color,
+        color: getLineColors(lines[element].id),
       })
     })
 
-    lines = lines.map((line, index) => {
+    linesToRender = linesToRender.map((line, index) => {
       return <Line coords={line.coords} color={line.color} key={index} />
     })
 
@@ -69,20 +72,23 @@ class Editor extends Component {
     return (
       <EditorView>
         <EditorSvg viewBox={`0 0 ${clientWidth * 0.8} ${clientHeight * 0.98}`}>
-          {lines}
+          {linesToRender}
         </EditorSvg>
-        {Object.keys(this.props.stations).map(stationIndex => (
+        {Object.keys(stations).map(stationIndex => (
           <Draggable
             bounds="parent"
             disabled={this.props.screen !== 'editor'}
             defaultPosition={{
-              x: this.props.stations[stationIndex].position[0],
-              y: this.props.stations[stationIndex].position[1],
+              x: stations[stationIndex].position[0],
+              y: stations[stationIndex].position[1],
             }}
             onDrag={this.handleStationDrag}
             key={stationIndex}
           >
-            <Station data-id={stationIndex} />
+            <Station
+              data-id={stationIndex}
+              color={getLineColors(stations[stationIndex].lines[0])}
+            />
           </Draggable>
         ))}
       </EditorView>
