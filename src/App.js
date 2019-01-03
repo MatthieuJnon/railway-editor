@@ -7,6 +7,7 @@ import { createStore } from 'redux'
 import { connect } from 'react-redux'
 
 import LeftMenu from 'components/Menu/LeftMenu'
+import RightMenu from 'components/Menu/RightMenu'
 import Editor from 'components/Editor'
 import 'res/stylesheet/main.css'
 import reducer from 'reducer'
@@ -32,6 +33,7 @@ class ActualApp extends Component {
       <StateScroller screen={this.props.screen}>
         <LeftMenu />
         <Editor />
+        <RightMenu />
       </StateScroller>
     )
   }
