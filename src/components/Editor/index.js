@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { moveStation } from 'data/actions'
+import { updateEditorInfo } from 'actions'
 import { getLineColors } from 'data'
 import Line from 'components/Editor/Line'
 
@@ -31,12 +32,23 @@ const EditorSvg = styled.svg`
   height: 98vh;
   width: 80vw;
 `
+const InfoDisplay = styled.div`
+  position: absolute;
+  left: -8vw;
+  bottom: 0;
+  height: 1.8em;
+  width: 50vw;
+  color: ${props => props.theme.primary};
+  font-size: 1em;
+`
 
 class Editor extends Component {
   constructor(props) {
     super(props)
 
     this.handleStationDrag = this.handleStationDrag.bind(this)
+    this.handleStationMouseEnter = this.handleStationMouseEnter.bind(this)
+    this.handleStationMouseLeave = this.handleStationMouseLeave.bind(this)
   }
 
   handleStationDrag(event, data) {
@@ -44,6 +56,18 @@ class Editor extends Component {
       data.x,
       data.y,
     ])
+  }
+
+  handleStationMouseEnter(station) {
+    this.props.updateEditorInfo(
+      `station : "${station.name}" X:${station.position[0]} Y:${
+        station.position[1]
+      } line : ${station.lines} `
+    )
+  }
+
+  handleStationMouseLeave(station) {
+    this.props.updateEditorInfo('')
   }
 
   render() {
@@ -84,13 +108,23 @@ class Editor extends Component {
             }}
             onDrag={this.handleStationDrag}
             key={stationIndex}
+            onStop={() => this.handleStationMouseEnter(stations[stationIndex])}
           >
             <Station
               data-id={stationIndex}
               color={getLineColors(stations[stationIndex].lines[0])}
+              onMouseEnter={() =>
+                this.handleStationMouseEnter(stations[stationIndex])
+              }
+              onMouseLeave={() =>
+                this.handleStationMouseLeave(stations[stationIndex])
+              }
             />
           </Draggable>
         ))}
+        {this.props.screen === 'editor' && (
+          <InfoDisplay>{this.props.info}</InfoDisplay>
+        )}
       </EditorView>
     )
   }
@@ -100,10 +134,12 @@ const mapStateToProps = state => ({
   stations: state.map.stations,
   lines: state.map.lines,
   screen: state.app.screen,
+  info: state.app.editorInfo,
 })
 
 const mapDispatchToProps = {
   moveStation,
+  updateEditorInfo,
 }
 
 export default connect(

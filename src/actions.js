@@ -5,4 +5,12 @@ export const changeScreen = newScreen => {
   }
 }
 
+export const updateEditorInfo = info => {
+  return {
+    type: 'UPDATE_EDITOR_INFO',
+    info: info,
+  }
+}
+
+export const UPDATE_EDITOR_INFO = 'UPDATE_EDITOR_INFO'
 export const CHANGE_SCREEN = 'CHANGE_SCREEN'

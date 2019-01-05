@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
 import map from 'data/reducer'
-import { CHANGE_SCREEN } from 'actions'
+import { CHANGE_SCREEN, UPDATE_EDITOR_INFO } from 'actions'
 
 const initialAppState = {
   screen: 'menu',
   error: '',
+  editorInfo: '',
 }
 
 const availablesScreens = ['menu', 'editor']
@@ -22,6 +23,11 @@ function app(state = initialAppState, action) {
           ...state,
           error: 'unknown screen',
         }
+      }
+    case UPDATE_EDITOR_INFO:
+      return {
+        ...state,
+        editorInfo: action.info,
       }
     default:
       return state
