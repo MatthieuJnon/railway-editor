@@ -25,7 +25,7 @@ export const moveStation = (stationId, newPosition) => {
   return {
     type: 'MOVE_STATION',
     stationId: stationId,
-    newPosition: newPosition
+    newPosition: newPosition,
   }
 }
 

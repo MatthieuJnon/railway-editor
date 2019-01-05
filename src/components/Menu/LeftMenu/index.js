@@ -125,7 +125,7 @@ class MainMenu extends Component {
           onClick={this.closeWindow}
           screen={this.props.screen}
         >
-          <CloseIcon color={this.state.closeButtonHovered ? '#ffffff' : ''} />
+          <CloseIcon />
         </Icon>
         <HandleBar />
       </Header>

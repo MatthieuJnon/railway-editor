@@ -26,6 +26,7 @@ const Icon = styled.div`
   height: 20vh;
   width: 10vw;
   padding: 1.5em;
+  cursor: pointer;
 `
 
 class EditMenu extends React.Component {

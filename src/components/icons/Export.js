@@ -1,10 +1,9 @@
 import React from 'react'
-import { theme } from 'theme/globalStyle'
-import PropTypes from 'prop-types'
+import HoverableIcon from './HoverableIcon'
 
-const Export = props => {
+const Export = () => {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 67 77">
+    <HoverableIcon viewBox="0 0 67 77">
       <g
         id="Page-1"
         stroke="none"
@@ -22,7 +21,7 @@ const Export = props => {
               fontSize="20"
               fontWeight="normal"
               letterSpacing="0.5149427"
-              fill={props.color ? props.color : theme.textSecondary}
+              fill="currentColor"
             >
               <tspan x="17.3051719" y="70">
                 Export
@@ -35,26 +34,22 @@ const Export = props => {
             >
               <polyline
                 id="Path"
-                stroke={props.color ? props.color : theme.textSecondary}
+                stroke="currentColor"
                 strokeWidth="5"
                 strokeLinecap="round"
                 points="29 34 0 34 0 2.12746487e-14 29 1.07761022e-14"
               />
               <polygon
                 id="Path-2"
-                fill={props.color ? props.color : theme.textSecondary}
+                fill="currentColor"
                 points="16 20 16 14 37 14 37 8.10867418 49 17 37 26 37 20"
               />
             </g>
           </g>
         </g>
       </g>
-    </svg>
+    </HoverableIcon>
   )
-}
-
-Export.propTypes = {
-  color: PropTypes.string,
 }
 
 export default Export

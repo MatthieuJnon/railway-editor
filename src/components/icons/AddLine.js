@@ -1,10 +1,9 @@
 import React from 'react'
-import { theme } from 'theme/globalStyle'
-import PropTypes from 'prop-types'
+import HoverableIcon from './HoverableIcon'
 
-const AddLine = props => {
+const AddLine = () => {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 59 101">
+    <HoverableIcon viewBox="0 0 59 101">
       <g
         id="Page-1"
         stroke="none"
@@ -20,7 +19,7 @@ const AddLine = props => {
             <g
               id="Group-2"
               transform="translate(22.000000, 0.000000)"
-              stroke={props.color ? props.color : theme.textSecondary}
+              stroke="currentColor"
             >
               <g
                 id="Group"
@@ -48,7 +47,7 @@ const AddLine = props => {
                 <path
                   d="M18.7469107,16.5 L34,29.5"
                   id="Line-2"
-                  fill={props.color ? props.color : theme.textSecondary}
+                  fill="currentColor"
                   fillRule="nonzero"
                   strokeLinecap="square"
                 />
@@ -68,7 +67,7 @@ const AddLine = props => {
               fontSize="20"
               fontWeight="normal"
               letterSpacing="0.5149427"
-              fill={props.color ? props.color : theme.textSecondary}
+              fill="currentColor"
             >
               <tspan x="29.5601146" y="100">
                 Line
@@ -77,12 +76,8 @@ const AddLine = props => {
           </g>
         </g>
       </g>
-    </svg>
+    </HoverableIcon>
   )
-}
-
-AddLine.propTypes = {
-  color: PropTypes.string,
 }
 
 export default AddLine

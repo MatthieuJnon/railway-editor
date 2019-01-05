@@ -1,10 +1,10 @@
 import React from 'react'
-import { theme } from 'theme/globalStyle'
-import PropTypes from 'prop-types'
+import HoverableIcon from './HoverableIcon'
 
-const AddStation = props => {
+
+const AddStation = () => {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 74 88">
+    <HoverableIcon viewBox="0 0 74 88">
       <g
         id="Page-1"
         stroke="none"
@@ -19,7 +19,7 @@ const AddStation = props => {
           <g id="Add-station" transform="translate(1089.000000, 26.000000)">
             <ellipse
               id="Oval"
-              stroke={props.color ? props.color : theme.textSecondary}
+              stroke="currentColor"
               strokeWidth="5"
               fillOpacity="0"
               fill="#FFFFFF"
@@ -34,7 +34,7 @@ const AddStation = props => {
               fontSize="20"
               fontWeight="normal"
               letterSpacing="0.5149427"
-              fill={props.color ? props.color : theme.textSecondary}
+              fill="currentColor"
             >
               <tspan x="14.2977005" y="87">
                 Station
@@ -43,7 +43,7 @@ const AddStation = props => {
             <path
               d="M70.5424723,7.54247233 L65.209139,12.8758057 L70.5424723,7.54247233 L65.209139,2.209139 L70.5424723,7.54247233 Z M70.5424723,7.54247233 L75.8758057,2.209139 L70.5424723,7.54247233 L75.8758057,12.8758057 L70.5424723,7.54247233 Z"
               id="Combined-Shape"
-              stroke={props.color ? props.color : theme.textSecondary}
+              stroke="currentColor"
               strokeWidth="3"
               strokeLinecap="square"
               fillRule="nonzero"
@@ -52,12 +52,8 @@ const AddStation = props => {
           </g>
         </g>
       </g>
-    </svg>
+    </HoverableIcon>
   )
-}
-
-AddStation.propTypes = {
-  color: PropTypes.string,
 }
 
 export default AddStation

@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { theme } from 'theme/globalStyle'
+import HoverableIcon from './HoverableIcon'
 
-const Close = props => {
+const Close = () => {
   return (
-    <svg width="100%" height="100%" viewBox="0 0 23 22">
+    <HoverableIcon viewBox="0 0 23 22">
       <g
         id="Page-1"
         stroke="none"
@@ -17,7 +16,7 @@ const Close = props => {
           id="Matthieu---Landing"
           transform="translate(-28.000000, -29.000000)"
           fillRule="nonzero"
-          stroke={props.color ? props.color : theme.textSecondary}
+          stroke="currentColor"
           strokeWidth="3"
         >
           <g id="Close" transform="translate(30.000000, 30.000000)">
@@ -28,12 +27,8 @@ const Close = props => {
           </g>
         </g>
       </g>
-    </svg>
+    </HoverableIcon>
   )
-}
-
-Close.propTypes = {
-  color: PropTypes.string,
 }
 
 export default Close
