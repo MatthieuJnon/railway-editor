@@ -1,22 +1,25 @@
+import { createStore, applyMiddleware, compose } from 'redux'
 import GlobalStyle, { theme } from 'theme/globalStyle'
 import { ThemeProvider } from 'styled-components'
+import thunkMiddleware from "redux-thunk";
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import styled from 'styled-components'
-import { createStore } from 'redux'
 import { connect } from 'react-redux'
 
-import LeftMenu from 'components/Menu/LeftMenu'
 import RightMenu from 'components/Menu/RightMenu'
+import LeftMenu from 'components/Menu/LeftMenu'
 import Editor from 'components/Editor'
 import 'res/stylesheet/main.css'
 import reducer from 'reducer'
 
 require('dotenv').config()
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(thunkMiddleware))
 )
 
 const StateScroller = styled.div`

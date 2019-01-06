@@ -19,6 +19,7 @@ export const theme = {
   textSecondary: '#b6d8ff',
   gridColor: '#fafafa',
   white: '#ffffff',
+  error: '#ff2943',
   fontFamily: 'Montserrat',
   menuTransition: 'transform 0.4s ease',
 }

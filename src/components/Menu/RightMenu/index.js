@@ -1,6 +1,8 @@
-import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import React from 'react'
 
+import { addLine, showEditorErrorBriefly } from 'data/actions'
 import AddStation from 'components/icons/AddStation'
 import AddLine from 'components/icons/AddLine'
 import Export from 'components/icons/Export'
@@ -30,6 +32,20 @@ const Icon = styled.div`
 `
 
 class EditMenu extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handleAddLineClick = this.handleAddLineClick.bind(this)
+  }
+
+  handleAddLineClick() {
+    if(Object.keys(this.props.lines).length >= 6) {
+      this.props.showEditorErrorBriefly('max number of lines reached', 3000)
+    } else {
+      this.props.addLine()
+    }
+  }
+
   render() {
     return (
       <Header>
@@ -37,7 +53,7 @@ class EditMenu extends React.Component {
           <Icon>
             <AddStation />
           </Icon>
-          <Icon>
+          <Icon onClick={this.handleAddLineClick}>
             <AddLine />
           </Icon>
           <Icon>
@@ -49,4 +65,16 @@ class EditMenu extends React.Component {
   }
 }
 
-export default EditMenu
+const mapStateToProps = state => ({
+  lines: state.map.lines
+})
+
+const mapDispatchToProps = {
+  addLine,
+  showEditorErrorBriefly,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditMenu)

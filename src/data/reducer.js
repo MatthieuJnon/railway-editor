@@ -3,23 +3,60 @@ import {
   ADD_STATION,
   ADD_STATION_TO_LINE,
   MOVE_STATION,
+  UPDATE_EDITOR_ERROR,
 } from './actions'
+
+const linesNames = ['Blue', 'Black', 'Green', 'Orange', 'Purple', 'Yellow']
+
+const allStationsNames = [
+  'Agapanthe',
+  'Bleuet',
+  'Coquelicot',
+  'Dahlia',
+  'Edelweiss',
+  'Ficaire',
+  'Grebera',
+  'Hortensia',
+  'Iris',
+  'Jasmin',
+  'Kalmie',
+  'Lys',
+  'Marguerite',
+  'Narcisse',
+  'Ophrys',
+  'Petunia',
+  'Quinoa',
+  'Renoncule',
+  'Scabieuse',
+  'Tulipe',
+  'Ursinia',
+  'Violet',
+  'Waterlily',
+  'Xeranthemum',
+  'Yarrow',
+  'Zenobia',
+  'Amaranthus',
+  'Begonia',
+  'Cyclamen',
+  'Daphne',
+  'Echinacea',
+]
 
 const initialMapState = {
   lines: {
     '0': {
-      name: 'Black',
+      name: 'Blue',
       id: 0,
       order: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18],
     },
     '1': {
-      name: 'Blue',
+      name: 'Black',
       id: 1,
       order: [1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19],
     },
   },
   stations: {
-    '0': { name: 'Agapanthe', position: [150, 700], lines: [0] },
+    '0': { name: 'Agapanthe', position: [129, 587], lines: [0] },
     '1': { name: 'Bleuet', position: [865, 85], lines: [1] },
     '2': { name: 'Coquelicot', position: [221, 629], lines: [0] },
     '3': { name: 'Dahlia', position: [794, 156], lines: [1] },
@@ -42,6 +79,28 @@ const initialMapState = {
   },
   autoIndexLineCounter: 2,
   autoIndexStationCounter: 20,
+  availableStationNames: [
+    'Ursinia',
+    'Violet',
+    'Waterlily',
+    'Xeranthemum',
+    'Yarrow',
+    'Zenobia',
+    'Amaranthus',
+    'Begonia',
+    'Cyclamen',
+    'Daphne',
+    'Echinacea',
+  ],
+  error: ''
+}
+
+function getNewLineId(lines) {
+  const possibleIds = ['0', '1', '2', '3', '4', '5']
+  const lineKeys = Object.keys(lines)
+  return possibleIds.find(id => {
+    return !lineKeys.includes(id)
+  })
 }
 
 function map(state = initialMapState, action) {
@@ -57,32 +116,40 @@ function map(state = initialMapState, action) {
           },
         ],
       })
+    case UPDATE_EDITOR_ERROR:
+      return {
+        ...state,
+        error: action.error
+      }
     case ADD_LINE:
-      return Object.assign({}, state, {
-        lines: [
+      if (Object.keys(state.lines).length > 6) {
+        return state
+      }
+      const newLineId = getNewLineId(state.lines)
+      return {
+        ...state,
+        lines: {
           ...state.lines,
-          {
-            name: action.line.name,
-            order: [],
-            id: state.autoIndexLineCounter++,
+          [newLineId]: {
+            name: linesNames[newLineId],
+            id: newLineId,
+            order: [state.autoIndexStationCounter],
           },
-        ],
-      })
+        },
+        stations: {
+          ...state.stations,
+          [state.autoIndexStationCounter]: {
+            name: state.availableStationNames[0],
+            position: [50, 100 + newLineId * 100],
+            lines: [newLineId],
+          },
+        },
+        autoIndexStationCounter: state.autoIndexStationCounter + 1,
+        availableStationNames: state.availableStationNames.slice(1),
+      }
     case ADD_STATION_TO_LINE:
       return {
         ...state,
-        lines: state.lines.map(line => {
-          if (line.index !== action.index) {
-            return line
-          }
-          //slice copies the array by value
-          let order = line.order.slice()
-          order.splice(action.index, 0, action.stationId)
-          return {
-            ...line,
-            order: order,
-          }
-        }),
       }
     case MOVE_STATION:
       return {

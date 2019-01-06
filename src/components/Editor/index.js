@@ -34,13 +34,23 @@ const EditorSvg = styled.svg`
 `
 const InfoDisplay = styled.div`
   position: absolute;
-  left: -8vw;
+  left: -6vw;
   bottom: 0;
   height: 1.8em;
   width: 50vw;
   color: ${props => props.theme.primary};
   font-size: 1em;
 `
+
+const ErrorDisplay = styled.div`
+  position: absolute;
+  left: -6vw;
+  bottom: 1.8em;
+  width: 50vw;
+  color: ${props => props.theme.error};
+  font-size: 1.2em;
+`
+
 
 class Editor extends Component {
   constructor(props) {
@@ -125,6 +135,9 @@ class Editor extends Component {
         {this.props.screen === 'editor' && (
           <InfoDisplay>{this.props.info}</InfoDisplay>
         )}
+        {this.props.error !== '' && (
+          <ErrorDisplay>{this.props.error}</ErrorDisplay>
+        )}
       </EditorView>
     )
   }
@@ -135,6 +148,7 @@ const mapStateToProps = state => ({
   lines: state.map.lines,
   screen: state.app.screen,
   info: state.app.editorInfo,
+  error: state.map.error,
 })
 
 const mapDispatchToProps = {
