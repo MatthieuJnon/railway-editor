@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import React from 'react'
 
-import { addLine, showEditorErrorBriefly } from 'data/actions'
+import { addLine, showEditorErrorBriefly, exportMap } from 'data/actions'
 import AddStation from 'components/icons/AddStation'
 import AddLine from 'components/icons/AddLine'
 import Export from 'components/icons/Export'
@@ -36,14 +36,20 @@ class EditMenu extends React.Component {
     super(props)
 
     this.handleAddLineClick = this.handleAddLineClick.bind(this)
+    this.handleExport = this.handleExport.bind(this)
   }
 
   handleAddLineClick() {
-    if(Object.keys(this.props.lines).length >= 6) {
+    if (Object.keys(this.props.lines).length >= 6) {
       this.props.showEditorErrorBriefly('max number of lines reached', 3000)
     } else {
       this.props.addLine()
     }
+  }
+
+  handleExport() {
+    const { dialog } = window.require('electron').remote
+    this.props.exportMap(dialog.showSaveDialog())
   }
 
   render() {
@@ -56,7 +62,7 @@ class EditMenu extends React.Component {
           <Icon onClick={this.handleAddLineClick}>
             <AddLine />
           </Icon>
-          <Icon>
+          <Icon onClick={this.handleExport}>
             <Export />
           </Icon>
         </IconsContainer>
@@ -66,12 +72,13 @@ class EditMenu extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  lines: state.map.lines
+  lines: state.map.lines,
 })
 
 const mapDispatchToProps = {
   addLine,
   showEditorErrorBriefly,
+  exportMap,
 }
 
 export default connect(

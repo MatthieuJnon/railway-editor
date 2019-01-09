@@ -4,7 +4,10 @@ import {
   ADD_STATION_TO_LINE,
   MOVE_STATION,
   UPDATE_EDITOR_ERROR,
+  EXPORT_MAP
 } from './actions'
+
+import { exportXml } from './xml'
 
 const linesNames = ['Blue', 'Black', 'Green', 'Orange', 'Purple', 'Yellow']
 
@@ -116,6 +119,9 @@ function map(state = initialMapState, action) {
           },
         ],
       })
+    case EXPORT_MAP:
+      exportXml(state, action.path)
+      return state
     case UPDATE_EDITOR_ERROR:
       return {
         ...state,
