@@ -49,7 +49,11 @@ class EditMenu extends React.Component {
 
   handleExport() {
     const { dialog } = window.require('electron').remote
-    this.props.exportMap(dialog.showSaveDialog())
+    const exportPath = dialog.showSaveDialog();
+    if (exportPath === undefined) {
+      return
+    }
+    this.props.exportMap(exportPath)
   }
 
   render() {
