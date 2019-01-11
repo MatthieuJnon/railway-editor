@@ -4,7 +4,8 @@ import {
   ADD_STATION_TO_LINE,
   MOVE_STATION,
   UPDATE_EDITOR_ERROR,
-  EXPORT_MAP
+  EXPORT_MAP,
+  UPDATE_LINE_INPUT,
 } from './actions'
 
 import { exportXml } from './xml'
@@ -95,7 +96,8 @@ const initialMapState = {
     'Daphne',
     'Echinacea',
   ],
-  error: ''
+  error: '',
+  addStationInput: 1,
 }
 
 function getNewLineId(lines) {
@@ -109,23 +111,51 @@ function getNewLineId(lines) {
 function map(state = initialMapState, action) {
   switch (action.type) {
     case ADD_STATION:
-      return Object.assign({}, state, {
-        stations: [
-          ...state.stations,
-          {
-            name: action.station.name,
-            position: action.station.position,
-            id: state.autoIndexStationCounter++,
+      const lineToUpdate = state.addStationInput - 1
+      const lastStationPosition =
+        state.stations[
+          state.lines[lineToUpdate].order[
+            state.lines[lineToUpdate].order.length - 1
+          ]
+        ].position
+      return {
+        ...state,
+        lines: {
+          ...state.lines,
+          [lineToUpdate]: {
+            ...state.lines[lineToUpdate],
+            order: [
+              ...state.lines[lineToUpdate].order,
+              state.autoIndexStationCounter,
+            ],
           },
-        ],
-      })
+        },
+        stations: {
+          ...state.stations,
+          [state.autoIndexStationCounter]: {
+            name: state.availableStationNames[0],
+            position: [
+              lastStationPosition[0] + 25,
+              lastStationPosition[1] + 25,
+            ],
+            lines: [lineToUpdate],
+          },
+        },
+        autoIndexStationCounter: state.autoIndexStationCounter + 1,
+        availableStationNames: state.availableStationNames.slice(1),
+      }
+    case UPDATE_LINE_INPUT:
+      return {
+        ...state,
+        addStationInput: action.input,
+      }
     case EXPORT_MAP:
       exportXml(state, action.path)
       return state
     case UPDATE_EDITOR_ERROR:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       }
     case ADD_LINE:
       if (Object.keys(state.lines).length > 6) {

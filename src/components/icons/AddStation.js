@@ -1,10 +1,9 @@
 import React from 'react'
 import HoverableIcon from './HoverableIcon'
 
-
 const AddStation = () => {
   return (
-    <HoverableIcon viewBox="0 0 74 88">
+    <HoverableIcon viewBox="0 0 74 112">
       <g
         id="Page-1"
         stroke="none"
@@ -49,6 +48,18 @@ const AddStation = () => {
               fillRule="nonzero"
               transform="translate(70.542472, 7.542472) rotate(45.000000) translate(-70.542472, -7.542472) "
             />
+            <text
+              id="on-line"
+              fontFamily="Montserrat-Regular, Montserrat"
+              fontSize="20"
+              fontWeight="normal"
+              letterSpacing="0.514942706"
+              fill="currentColor"
+            >
+              <tspan x="16.3277005" y="111">
+                on line
+              </tspan>
+            </text>
           </g>
         </g>
       </g>

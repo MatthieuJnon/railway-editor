@@ -51,7 +51,6 @@ const ErrorDisplay = styled.div`
   font-size: 1.2em;
 `
 
-
 class Editor extends Component {
   constructor(props) {
     super(props)
@@ -72,7 +71,7 @@ class Editor extends Component {
     this.props.updateEditorInfo(
       `station : "${station.name}" X:${station.position[0]} Y:${
         station.position[1]
-      } line : ${station.lines} `
+      } line : ${station.lines.map(line => line + 1)} `
     )
   }
 
