@@ -34,7 +34,7 @@ const EditorSvg = styled.svg`
 `
 const InfoDisplay = styled.div`
   position: absolute;
-  left: -6vw;
+  left: -3vw;
   bottom: 0;
   height: 1.8em;
   width: 50vw;
@@ -44,7 +44,7 @@ const InfoDisplay = styled.div`
 
 const ErrorDisplay = styled.div`
   position: absolute;
-  left: -6vw;
+  left: -3vw;
   bottom: 1.8em;
   width: 50vw;
   color: ${props => props.theme.error};
