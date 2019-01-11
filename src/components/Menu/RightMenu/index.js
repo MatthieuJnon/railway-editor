@@ -50,8 +50,8 @@ class EditMenu extends React.Component {
   handleExport() {
     const { dialog } = window.require('electron').remote
     const exportPath = dialog.showSaveDialog({
-      defaultPath: 'map_connfig.xml'
-    });
+      defaultPath: 'map_config.xml',
+    })
     if (exportPath === undefined) {
       return
     }
