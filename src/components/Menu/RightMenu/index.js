@@ -49,11 +49,14 @@ class EditMenu extends React.Component {
 
   handleExport() {
     const { dialog } = window.require('electron').remote
-    const exportPath = dialog.showSaveDialog();
+    const exportPath = dialog.showSaveDialog({
+      defaultPath: 'map_connfig.xml'
+    });
     if (exportPath === undefined) {
       return
     }
     this.props.exportMap(exportPath)
+    this.props.showEditorErrorBriefly('Map exported, you might want to add events to the file', 3000)
   }
 
   render() {
