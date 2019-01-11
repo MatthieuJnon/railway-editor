@@ -15,11 +15,11 @@ import Export from 'components/icons/Export'
 
 const Header = styled.div`
   height: 100vh;
-  width: 20vw;
+  width: 11vw;
   background-color: ${props => props.theme.primary};
   position: absolute;
   top: 0;
-  left: 130vw;
+  left: 135vw;
   box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.22);
 `
 

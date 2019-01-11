@@ -27,7 +27,7 @@ const StateScroller = styled.div`
   height: 100vh;
   width: 100vw;
   transition: ${props => props.theme.menuTransition};
-  transform: ${props => (props.screen === 'editor' ? 'translateX(-40vw)' : '')};
+  transform: ${props => (props.screen === 'editor' ? 'translateX(-45vw)' : '')};
 `
 
 class ActualApp extends Component {

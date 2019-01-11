@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { changeScreen } from 'actions'
-import CloseIcon from 'components/icons/Close'
 
 const Background = styled.div`
   height: 120vh;
@@ -64,20 +63,6 @@ const HandleBar = styled.div`
   position: absolute;
 `
 
-const Icon = styled.div`
-  transition: ${props => props.theme.menuTransition};
-  /* the icon needs to translate because translation of parent component breaks position:fixed
-  So we cant use it */
-  transform: ${props => (props.screen === 'editor' ? 'translateX(40vw)' : '')};
-  position: absolute;
-  left: 30px;
-  top: 30px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  -webkit-app-region: no-drag;
-`
-
 const Header = styled.header`
   height: 100vh;
   width: 50vw;
@@ -87,25 +72,7 @@ class MainMenu extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      closeButtonHovered: false,
-    }
-
-    this.handleHoverCloseButton = this.handleHoverCloseButton.bind(this)
-    this.closeWindow = this.closeWindow.bind(this)
     this.handleNewMap = this.handleNewMap.bind(this)
-  }
-
-  handleHoverCloseButton() {
-    this.setState({
-      closeButtonHovered: !this.state.closeButtonHovered,
-    })
-  }
-
-  closeWindow() {
-    const win = window.require('electron').remote.getCurrentWindow()
-
-    win.close()
   }
 
   handleNewMap() {
@@ -119,14 +86,6 @@ class MainMenu extends Component {
         <Title>Railway Editor</Title>
         <NewMap onClick={this.handleNewMap}>New map</NewMap>
         <LoadMap>Load map</LoadMap>
-        <Icon
-          onMouseEnter={this.handleHoverCloseButton}
-          onMouseLeave={this.handleHoverCloseButton}
-          onClick={this.closeWindow}
-          screen={this.props.screen}
-        >
-          <CloseIcon />
-        </Icon>
         <HandleBar />
       </Header>
     )
