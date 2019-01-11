@@ -8412,6 +8412,15 @@ react-app-rewired@^1.2.0:
     cross-spawn "^5.1.0"
     dotenv "^4.0.0"
 
+react-app-rewired@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-app-rewired/-/react-app-rewired-2.0.1.tgz#5c4902e68e78aa8851ef84a03579418b6f891e0b"
+  integrity sha512-tI0PdH9eWLEPszJ5QN0avWgNX/2tJbzW5Mi2T5CY8MXVYfk2KIY61JtUSKzTd1i7wfN4YlOYpL7gFekA5rhsfw==
+  dependencies:
+    cross-spawn "^6.0.5"
+    dotenv "^6.2.0"
+    semver "^5.6.0"
+
 react-dev-utils@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.1.1.tgz#a07e3e8923c4609d9f27e5af5207e3ca20724895"
