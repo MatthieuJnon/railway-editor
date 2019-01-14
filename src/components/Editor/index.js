@@ -15,6 +15,8 @@ const EditorView = styled.div`
   position: absolute;
   top: 0;
   left: 50vw;
+  transition: ${props => props.theme.menuTransition};
+  opacity: ${props => props.active ? 1 : 0.2};
 `
 
 const Station = styled.div`
@@ -103,7 +105,7 @@ class Editor extends Component {
     const clientWidth = document.documentElement.clientWidth
 
     return (
-      <EditorView>
+      <EditorView active={this.props.screen === 'editor'}>
         <EditorSvg viewBox={`0 0 ${clientWidth * 0.8} ${clientHeight * 0.98}`}>
           {linesToRender}
         </EditorSvg>
