@@ -177,7 +177,7 @@ function map(state = initialMapState, action) {
           [state.autoIndexStationCounter]: {
             name: state.availableStationNames[0],
             position: [50, 100 + newLineId * 100],
-            lines: [newLineId],
+            lines: [parseInt(newLineId)],
           },
         },
         autoIndexStationCounter: state.autoIndexStationCounter + 1,
