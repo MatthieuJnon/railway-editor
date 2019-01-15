@@ -3,9 +3,9 @@ import Draggable from 'react-draggable'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { moveStation } from 'data/actions'
+import { moveStation, selectStation, unselect } from 'data/actions'
 import { updateEditorInfo } from 'actions'
-import { getLineColors } from 'data'
+import { getLineColors, getSecondaryColors } from 'data'
 import Line from 'components/Editor/Line'
 
 const EditorView = styled.div`
@@ -15,8 +15,6 @@ const EditorView = styled.div`
   position: absolute;
   top: 0;
   left: 50vw;
-  transition: ${props => props.theme.menuTransition};
-  opacity: ${props => props.active ? 1 : 0.2};
 `
 
 const Station = styled.div`
@@ -25,6 +23,7 @@ const Station = styled.div`
   height: 28px;
   border-radius: 20041997px;
   border: 8px solid ${props => props.color};
+  transition: 'border 0.4s ease';
 `
 
 const EditorSvg = styled.svg`
@@ -82,7 +81,7 @@ class Editor extends Component {
   }
 
   render() {
-    const { stations, lines } = this.props
+    const { stations, lines, screen, selectedStation } = this.props
 
     let linesKeys = Object.keys(lines)
     let linesToRender = []
@@ -94,11 +93,23 @@ class Editor extends Component {
       linesToRender.push({
         coords: coords,
         color: getLineColors(lines[element].id),
+        secondaryColor: getSecondaryColors(lines[element].id),
       })
     })
 
     linesToRender = linesToRender.map((line, index) => {
-      return <Line coords={line.coords} color={line.color} key={index} />
+      return (
+        <Line
+          coords={line.coords}
+          color={
+            screen !== 'editor' || selectedStation !== -1
+              ? line.secondaryColor
+              : line.color
+          }
+          key={index}
+          disasbled={screen !== 'editor' || selectedStation !== -1}
+        />
+      )
     })
 
     const clientHeight = document.documentElement.clientHeight
@@ -112,18 +123,31 @@ class Editor extends Component {
         {Object.keys(stations).map(stationIndex => (
           <Draggable
             bounds="parent"
-            disabled={this.props.screen !== 'editor'}
+            disabled={
+              screen !== 'editor' ||
+              (stationIndex !== selectedStation && selectedStation !== -1)
+            }
             defaultPosition={{
               x: stations[stationIndex].position[0],
               y: stations[stationIndex].position[1],
             }}
             onDrag={this.handleStationDrag}
+            onClick={
+              selectedStation === stationIndex
+                ? () => this.props.selectStation(stationIndex)
+                : () => this.props.selectStation(stationIndex)
+            }
             key={stationIndex}
             onStop={() => this.handleStationMouseEnter(stations[stationIndex])}
           >
             <Station
               data-id={stationIndex}
-              color={getLineColors(stations[stationIndex].lines[0])}
+              color={
+                screen !== 'editor' ||
+                (stationIndex !== selectedStation && selectedStation !== -1)
+                  ? getSecondaryColors(stations[stationIndex].lines[0])
+                  : getLineColors(stations[stationIndex].lines[0])
+              }
               onMouseEnter={() =>
                 this.handleStationMouseEnter(stations[stationIndex])
               }
@@ -150,11 +174,14 @@ const mapStateToProps = state => ({
   screen: state.app.screen,
   info: state.app.editorInfo,
   error: state.map.error,
+  selectedStation: state.map.selectedStation,
 })
 
 const mapDispatchToProps = {
   moveStation,
   updateEditorInfo,
+  selectStation,
+  unselect,
 }
 
 export default connect(

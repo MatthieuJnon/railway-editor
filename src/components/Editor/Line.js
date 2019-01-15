@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-// const Wrapper = styled.div`
-// `
+const CustomLine = styled.line`
+  transition: 'stroke 0.4s ease';
+`
 
 class Line extends React.Component {
   render() {
@@ -23,7 +25,7 @@ class Line extends React.Component {
               Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)
             )
             return (
-              <line
+              <CustomLine
                 x1={x1}
                 y1={y1}
                 x2={x2}

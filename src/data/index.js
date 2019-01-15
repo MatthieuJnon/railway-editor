@@ -9,3 +9,15 @@ export const getLineColors = lineIndex => {
   ]
   return lineColors[lineIndex]
 }
+
+export const getSecondaryColors = lineIndex => {
+  const secondaryColors = [
+    '#d3e2f0',
+    '#cccccc',
+    '#cceeda',
+    '#fae4d1',
+    '#edd0f1',
+    '#f6f8d7',
+  ]
+  return secondaryColors[lineIndex]
+}

@@ -1,6 +1,6 @@
 export const addStation = () => {
   return {
-    type: ADD_STATION
+    type: ADD_STATION,
   }
 }
 
@@ -48,7 +48,22 @@ export const updateLineInput = input => {
   }
 }
 
+export const selectStation = stationId => {
+  return {
+    type: SELECT_STATION,
+    stationId: stationId,
+  }
+}
+
+export const unselect = () => {
+  return {
+    type: UNSELECT,
+  }
+}
+
 export const ADD_STATION = 'ADD_STATION'
+export const SELECT_STATION = 'SELECT_STATION'
+export const UNSELECT = 'UNSELECT'
 export const ADD_LINE = 'ADD_LINE'
 export const ADD_STATION_TO_LINE = 'ADD_STATION_TO_LINE'
 export const MOVE_STATION = 'MOVE_STATION'

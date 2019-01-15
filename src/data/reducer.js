@@ -6,6 +6,8 @@ import {
   UPDATE_EDITOR_ERROR,
   EXPORT_MAP,
   UPDATE_LINE_INPUT,
+  SELECT_STATION,
+  UNSELECT,
 } from './actions'
 
 import { exportXml } from './xml'
@@ -98,6 +100,7 @@ const initialMapState = {
   ],
   error: '',
   addStationInput: 1,
+  selectedStation: -1,
 }
 
 function getNewLineId(lines) {
@@ -143,6 +146,16 @@ function map(state = initialMapState, action) {
         },
         autoIndexStationCounter: state.autoIndexStationCounter + 1,
         availableStationNames: state.availableStationNames.slice(1),
+      }
+    case SELECT_STATION:
+      return {
+        ...state,
+        selectedStation: action.stationId,
+      }
+    case UNSELECT:
+      return {
+        ...state,
+        selectedStation: -1,
       }
     case UPDATE_LINE_INPUT:
       return {
