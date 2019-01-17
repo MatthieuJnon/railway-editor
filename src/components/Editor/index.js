@@ -3,7 +3,12 @@ import Draggable from 'react-draggable'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { moveStation, selectStation, unselect } from 'data/actions'
+import {
+  moveStation,
+  selectStation,
+  unselect,
+  deleteStation,
+} from 'data/actions'
 import { updateEditorInfo } from 'actions'
 import { getLineColors, getSecondaryColors } from 'data'
 import Line from 'components/Editor/Line'
@@ -78,12 +83,13 @@ class Editor extends Component {
       dragging: false,
     }
 
-    this.handleStationDrag = this.handleStationDrag.bind(this)
     this.handleStationMouseEnter = this.handleStationMouseEnter.bind(this)
     this.handleStationMouseLeave = this.handleStationMouseLeave.bind(this)
-    this.handleDragStop = this.handleDragStop.bind(this)
+    this.handleStationDelete = this.handleStationDelete.bind(this)
     this.handleStationClick = this.handleStationClick.bind(this)
+    this.handleStationDrag = this.handleStationDrag.bind(this)
     this.handleEditorClick = this.handleEditorClick.bind(this)
+    this.handleDragStop = this.handleDragStop.bind(this)
   }
 
   handleStationDrag(event, data) {
@@ -137,6 +143,10 @@ class Editor extends Component {
     this.props.unselect()
   }
 
+  handleStationDelete(stationIndex) {
+    this.props.deleteStation(stationIndex)
+  }
+
   render() {
     const { stations, lines, screen, selectedStation } = this.props
 
@@ -186,7 +196,7 @@ class Editor extends Component {
         {Object.keys(stations).map(stationIndex => {
           const station = stations[stationIndex]
           return (
-            <React.Fragment>
+            <React.Fragment key={stationIndex}>
               <Draggable
                 bounds="parent"
                 disabled={
@@ -219,6 +229,7 @@ class Editor extends Component {
                   <CloseStationIcon
                     left={station.position[0]}
                     top={station.position[1]}
+                    onClick={() => this.handleStationDelete(stationIndex)}
                   >
                     <CloseStation />
                   </CloseStationIcon>
@@ -258,6 +269,7 @@ const mapDispatchToProps = {
   updateEditorInfo,
   selectStation,
   unselect,
+  deleteStation,
 }
 
 export default connect(
