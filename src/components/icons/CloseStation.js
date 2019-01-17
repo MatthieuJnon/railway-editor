@@ -21,7 +21,7 @@ const CloseStation = () => {
             <path
               d="M5.4,13.5 L21.6,13.5"
               id="Path-3"
-              stroke="#currentColor"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               transform="translate(13.500000, 13.500000) rotate(45.000000) translate(-13.500000, -13.500000) "
@@ -29,7 +29,7 @@ const CloseStation = () => {
             <path
               d="M5.4,13.5 L21.6,13.5"
               id="Path-3"
-              stroke="#currentColor"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               transform="translate(13.500000, 13.500000) rotate(-45.000000) translate(-13.500000, -13.500000) "

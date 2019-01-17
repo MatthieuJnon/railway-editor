@@ -7,6 +7,8 @@ import { moveStation, selectStation, unselect } from 'data/actions'
 import { updateEditorInfo } from 'actions'
 import { getLineColors, getSecondaryColors } from 'data'
 import Line from 'components/Editor/Line'
+import CloseStation from 'components/icons/CloseStation'
+import LinkStations from 'components/icons/LinkStations'
 
 const EditorView = styled.div`
   height: 100vh;
@@ -50,6 +52,22 @@ const ErrorDisplay = styled.div`
   width: 50vw;
   color: ${props => props.theme.error};
   font-size: 1.2em;
+`
+
+const CloseStationIcon = styled.div`
+  height: 27px;
+  width: 27px;
+  position: absolute;
+  top: ${props => props.top - 40}px;
+  left: ${props => props.left}px;
+`
+
+const LinkStationsIcon = styled.div`
+  height: 27px;
+  width: 27px;
+  position: absolute;
+  top: ${props => props.top}px;
+  left: ${props => props.left + 40}px;
 `
 
 class Editor extends Component {
@@ -100,7 +118,6 @@ class Editor extends Component {
         dragging: false,
       })
     }, 5)
-    console.log('stopped dragging')
   }
 
   handleStationClick(stationIndex) {
@@ -114,7 +131,6 @@ class Editor extends Component {
   }
 
   handleEditorClick(event) {
-    console.log(event.target)
     if (event.target !== document.getElementById('editor-view')) {
       return
     }
@@ -167,37 +183,56 @@ class Editor extends Component {
         >
           {linesToRender}
         </EditorSvg>
-        {Object.keys(stations).map(stationIndex => (
-          <Draggable
-            bounds="parent"
-            disabled={
-              screen !== 'editor' ||
-              (stationIndex !== selectedStation && selectedStation !== -1)
-            }
-            defaultPosition={{
-              x: stations[stationIndex].position[0],
-              y: stations[stationIndex].position[1],
-            }}
-            onDrag={this.handleStationDrag}
-            key={stationIndex}
-            onStop={this.handleDragStop}
-          >
-            <Station
-              data-id={stationIndex}
-              color={
-                screen !== 'editor' ||
-                (stationIndex !== selectedStation && selectedStation !== -1)
-                  ? getSecondaryColors(stations[stationIndex].lines[0])
-                  : getLineColors(stations[stationIndex].lines[0])
-              }
-              onClick={() => this.handleStationClick(stationIndex)}
-              onMouseEnter={() =>
-                this.handleStationMouseEnter(stations[stationIndex])
-              }
-              onMouseLeave={this.handleStationMouseLeave}
-            />
-          </Draggable>
-        ))}
+        {Object.keys(stations).map(stationIndex => {
+          const station = stations[stationIndex]
+          return (
+            <React.Fragment>
+              <Draggable
+                bounds="parent"
+                disabled={
+                  screen !== 'editor' ||
+                  (stationIndex !== selectedStation && selectedStation !== -1)
+                }
+                defaultPosition={{
+                  x: station.position[0],
+                  y: station.position[1],
+                }}
+                onDrag={this.handleStationDrag}
+                key={stationIndex}
+                onStop={this.handleDragStop}
+              >
+                <Station
+                  data-id={stationIndex}
+                  color={
+                    screen !== 'editor' ||
+                    (stationIndex !== selectedStation && selectedStation !== -1)
+                      ? getSecondaryColors(station.lines[0])
+                      : getLineColors(station.lines[0])
+                  }
+                  onClick={() => this.handleStationClick(stationIndex)}
+                  onMouseEnter={() => this.handleStationMouseEnter(station)}
+                  onMouseLeave={this.handleStationMouseLeave}
+                />
+              </Draggable>
+              {stationIndex === selectedStation && (
+                <React.Fragment>
+                  <CloseStationIcon
+                    left={station.position[0]}
+                    top={station.position[1]}
+                  >
+                    <CloseStation />
+                  </CloseStationIcon>
+                  <LinkStationsIcon
+                    left={station.position[0]}
+                    top={station.position[1]}
+                  >
+                    <LinkStations />
+                  </LinkStationsIcon>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )
+        })}
         {this.props.screen === 'editor' && (
           <InfoDisplay>{this.props.info}</InfoDisplay>
         )}
