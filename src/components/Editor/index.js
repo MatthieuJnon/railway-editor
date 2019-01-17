@@ -127,7 +127,7 @@ class Editor extends Component {
   }
 
   handleStationClick(stationIndex) {
-    if (this.state.dragging) {
+    if (this.state.dragging || this.props.screen !== 'editor') {
       return
     } else {
       stationIndex === this.props.selectedStation
