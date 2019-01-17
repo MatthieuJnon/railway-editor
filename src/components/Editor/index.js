@@ -56,16 +56,30 @@ class Editor extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      dragging: false,
+    }
+
     this.handleStationDrag = this.handleStationDrag.bind(this)
     this.handleStationMouseEnter = this.handleStationMouseEnter.bind(this)
     this.handleStationMouseLeave = this.handleStationMouseLeave.bind(this)
+    this.handleDragStop = this.handleDragStop.bind(this)
+    this.handleStationClick = this.handleStationClick.bind(this)
+    this.handleEditorClick = this.handleEditorClick.bind(this)
   }
 
   handleStationDrag(event, data) {
-    this.props.moveStation(data.node.attributes['data-id'].value, [
-      data.x,
-      data.y,
-    ])
+    const stationId = data.node.attributes['data-id'].value
+    const station = this.props.stations[stationId]
+    this.setState({
+      dragging: true,
+    })
+    this.props.moveStation(stationId, [data.x, data.y])
+    this.props.updateEditorInfo(
+      `bordel : "${station.name}" X:${station.position[0]} Y:${
+        station.position[1]
+      } line : ${station.lines.map(line => line + 1)} `
+    )
   }
 
   handleStationMouseEnter(station) {
@@ -76,8 +90,35 @@ class Editor extends Component {
     )
   }
 
-  handleStationMouseLeave(station) {
+  handleStationMouseLeave() {
     this.props.updateEditorInfo('')
+  }
+
+  handleDragStop() {
+    setTimeout(() => {
+      this.setState({
+        dragging: false,
+      })
+    }, 5)
+    console.log('stopped dragging')
+  }
+
+  handleStationClick(stationIndex) {
+    if (this.state.dragging) {
+      return
+    } else {
+      stationIndex === this.props.selectedStation
+        ? this.props.unselect()
+        : this.props.selectStation(stationIndex)
+    }
+  }
+
+  handleEditorClick(event) {
+    console.log(event.target)
+    if (event.target !== document.getElementById('editor-view')) {
+      return
+    }
+    this.props.unselect()
   }
 
   render() {
@@ -116,8 +157,14 @@ class Editor extends Component {
     const clientWidth = document.documentElement.clientWidth
 
     return (
-      <EditorView active={this.props.screen === 'editor'}>
-        <EditorSvg viewBox={`0 0 ${clientWidth * 0.8} ${clientHeight * 0.98}`}>
+      <EditorView
+        active={this.props.screen === 'editor'}
+        onClick={this.handleEditorClick}
+      >
+        <EditorSvg
+          viewBox={`0 0 ${clientWidth * 0.8} ${clientHeight * 0.98}`}
+          id="editor-view"
+        >
           {linesToRender}
         </EditorSvg>
         {Object.keys(stations).map(stationIndex => (
@@ -132,13 +179,8 @@ class Editor extends Component {
               y: stations[stationIndex].position[1],
             }}
             onDrag={this.handleStationDrag}
-            onClick={
-              selectedStation === stationIndex
-                ? () => this.props.selectStation(stationIndex)
-                : () => this.props.selectStation(stationIndex)
-            }
             key={stationIndex}
-            onStop={() => this.handleStationMouseEnter(stations[stationIndex])}
+            onStop={this.handleDragStop}
           >
             <Station
               data-id={stationIndex}
@@ -148,12 +190,11 @@ class Editor extends Component {
                   ? getSecondaryColors(stations[stationIndex].lines[0])
                   : getLineColors(stations[stationIndex].lines[0])
               }
+              onClick={() => this.handleStationClick(stationIndex)}
               onMouseEnter={() =>
                 this.handleStationMouseEnter(stations[stationIndex])
               }
-              onMouseLeave={() =>
-                this.handleStationMouseLeave(stations[stationIndex])
-              }
+              onMouseLeave={this.handleStationMouseLeave}
             />
           </Draggable>
         ))}
