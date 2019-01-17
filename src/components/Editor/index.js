@@ -8,6 +8,8 @@ import {
   selectStation,
   unselect,
   deleteStation,
+  linkStations,
+  initiateLink,
 } from 'data/actions'
 import { updateEditorInfo } from 'actions'
 import { getLineColors, getSecondaryColors } from 'data'
@@ -89,6 +91,7 @@ class Editor extends Component {
     this.handleStationClick = this.handleStationClick.bind(this)
     this.handleStationDrag = this.handleStationDrag.bind(this)
     this.handleEditorClick = this.handleEditorClick.bind(this)
+    this.handleStationLink = this.handleStationLink.bind(this)
     this.handleDragStop = this.handleDragStop.bind(this)
   }
 
@@ -127,9 +130,17 @@ class Editor extends Component {
   }
 
   handleStationClick(stationIndex) {
-    if (this.state.dragging || this.props.screen !== 'editor') {
+    if (
+      this.state.dragging ||
+      this.props.screen !== 'editor' ||
+      (this.props.linkMode && stationIndex === this.props.linkStation)
+    ) {
       return
     } else {
+      if (this.props.linkMode) {
+        this.props.linkStations(stationIndex)
+        return
+      }
       stationIndex === this.props.selectedStation
         ? this.props.unselect()
         : this.props.selectStation(stationIndex)
@@ -145,6 +156,10 @@ class Editor extends Component {
 
   handleStationDelete(stationIndex) {
     this.props.deleteStation(stationIndex)
+  }
+
+  handleStationLink(stationIndex) {
+    this.props.initiateLink(stationIndex)
   }
 
   render() {
@@ -224,7 +239,7 @@ class Editor extends Component {
                   onMouseLeave={this.handleStationMouseLeave}
                 />
               </Draggable>
-              {stationIndex === selectedStation && (
+              {stationIndex === selectedStation && !this.props.linkMode && (
                 <React.Fragment>
                   <CloseStationIcon
                     left={station.position[0]}
@@ -236,6 +251,7 @@ class Editor extends Component {
                   <LinkStationsIcon
                     left={station.position[0]}
                     top={station.position[1]}
+                    onClick={() => this.handleStationLink(stationIndex)}
                   >
                     <LinkStations />
                   </LinkStationsIcon>
@@ -262,6 +278,8 @@ const mapStateToProps = state => ({
   info: state.app.editorInfo,
   error: state.map.error,
   selectedStation: state.map.selectedStation,
+  linkMode: state.map.linkMode,
+  linkStation: state.map.linkStation,
 })
 
 const mapDispatchToProps = {
@@ -270,6 +288,8 @@ const mapDispatchToProps = {
   selectStation,
   unselect,
   deleteStation,
+  linkStations,
+  initiateLink,
 }
 
 export default connect(

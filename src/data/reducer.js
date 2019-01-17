@@ -1,7 +1,6 @@
 import {
   ADD_LINE,
   ADD_STATION,
-  ADD_STATION_TO_LINE,
   MOVE_STATION,
   UPDATE_EDITOR_ERROR,
   EXPORT_MAP,
@@ -9,6 +8,8 @@ import {
   SELECT_STATION,
   UNSELECT,
   DELETE_STATION,
+  INITIATE_LINK,
+  LINK_STATIONS,
 } from './actions'
 
 import { exportXml } from './xml'
@@ -102,6 +103,17 @@ const initialMapState = {
   error: '',
   addStationInput: 1,
   selectedStation: -1,
+  linkMode: false,
+  linkStation: -1,
+}
+
+function stateError(state, error) {
+  return {
+    ...state,
+    linkMode: false,
+    selectedStation: -1,
+    error: error,
+  }
 }
 
 function getNewLineId(lines) {
@@ -182,10 +194,10 @@ function map(state = initialMapState, action) {
 
         //We remove the line if necessary
         if (newState.lines[line].order.length === 0) {
-          const { ['' + line]: _, ...nouvelles } = newState.lines
+          const { ['' + line]: _, ...newLines } = newState.lines
           newState = {
             ...newState,
-            lines: nouvelles,
+            lines: newLines,
           }
         }
       })
@@ -204,15 +216,86 @@ function map(state = initialMapState, action) {
       return {
         ...state,
         selectedStation: -1,
+        linkMode: false,
       }
+    case INITIATE_LINK:
+      return {
+        ...state,
+        linkMode: true,
+        linkStation: action.stationId,
+      }
+    case LINK_STATIONS:
+      const station1 = state.stations[state.linkStation]
+      const station2 = state.stations[action.stationId]
+
+      let error = false
+      station1.lines.forEach(line => {
+        if (station2.lines.includes(line)) {
+          error = true
+        }
+      })
+      station2.lines.forEach(line => {
+        if (station1.lines.includes(line)) {
+          error = true
+        }
+      })
+      if (error) {
+        return stateError(state, 'The two stations are on the same line')
+      }
+
+      const { ['' + action.stationId]: value, ...stations } = state.stations
+
+      stations[state.linkStation] = {
+        ...station1,
+        lines: [...station1.lines, ...station2.lines],
+      }
+
+      let nState = {
+        ...state,
+        linkMode: false,
+        stations: stations,
+        selectedStation: -1,
+        availableStationNames: [...state.availableStationNames, station2.name],
+      }
+
+      station2.lines.forEach(line => {
+        nState = {
+          ...nState,
+          lines: {
+            ...nState.lines,
+            [line]: {
+              ...nState.lines[line],
+              order: nState.lines[line].order.map(station => {
+                if (parseInt(station) === parseInt(action.stationId)) {
+                  console.log(
+                    `removing station ${
+                      action.stationId
+                    } from line ${line} and adding station ${
+                      state.linkStation
+                    } in place`
+                  )
+                  return state.linkStation
+                }
+                return station
+              }),
+            },
+          },
+        }
+      })
+
+      return nState
     case UPDATE_LINE_INPUT:
       return {
         ...state,
         addStationInput: action.input,
+        linkMode: false,
       }
     case EXPORT_MAP:
       exportXml(state, action.path)
-      return state
+      return {
+        ...state,
+        linkMode: false,
+      }
     case UPDATE_EDITOR_ERROR:
       return {
         ...state,
@@ -225,6 +308,7 @@ function map(state = initialMapState, action) {
       const newLineId = getNewLineId(state.lines)
       return {
         ...state,
+        linkMode: false,
         lines: {
           ...state.lines,
           [newLineId]: {
@@ -243,10 +327,6 @@ function map(state = initialMapState, action) {
         },
         autoIndexStationCounter: state.autoIndexStationCounter + 1,
         availableStationNames: state.availableStationNames.slice(1),
-      }
-    case ADD_STATION_TO_LINE:
-      return {
-        ...state,
       }
     case MOVE_STATION:
       return {

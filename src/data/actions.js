@@ -68,11 +68,27 @@ export const deleteStation = stationId => {
   }
 }
 
+export const initiateLink = stationId => {
+  return {
+    type: INITIATE_LINK,
+    stationId: stationId,
+  }
+}
+
+export const linkStations = stationId => {
+  return {
+    type: LINK_STATIONS,
+    stationId: stationId,
+  }
+}
+
 export const ADD_STATION_TO_LINE = 'ADD_STATION_TO_LINE'
 export const UPDATE_EDITOR_ERROR = 'UPDATE_EDITOR_ERROR'
 export const UPDATE_LINE_INPUT = 'UPDATE_LINE_INPUT'
 export const SELECT_STATION = 'SELECT_STATION'
 export const DELETE_STATION = 'DELETE_STATION'
+export const INITIATE_LINK = 'INITIATE_LINK'
+export const LINK_STATIONS = 'LINK_STATIONS'
 export const MOVE_STATION = 'MOVE_STATION'
 export const ADD_STATION = 'ADD_STATION'
 export const EXPORT_MAP = 'EXPORT_MAP'
