@@ -7,7 +7,9 @@ This project was made for college and for Thales Hong Kong, this is a small soft
 
 ## Available Scripts
 
-In the project directory, you can run:
+First run `yarn` or `npm install` to install dependencies
+
+Then in the project directory, you can run:
 
 ### `yarn run electron-dev`
 
