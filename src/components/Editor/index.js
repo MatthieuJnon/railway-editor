@@ -103,7 +103,7 @@ class Editor extends Component {
     })
     this.props.moveStation(stationId, [data.x, data.y])
     this.props.updateEditorInfo(
-      `bordel : "${station.name}" X:${station.position[0]} Y:${
+      `station : "${station.name}" X:${station.position[0]} Y:${
         station.position[1]
       } line : ${station.lines.map(line => line + 1)} `
     )
