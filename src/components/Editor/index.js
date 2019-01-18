@@ -10,6 +10,7 @@ import {
   deleteStation,
   linkStations,
   initiateLink,
+  showEditorErrorBriefly,
 } from 'data/actions'
 import { updateEditorInfo } from 'actions'
 import { getLineColors, getSecondaryColors } from 'data'
@@ -129,6 +130,23 @@ class Editor extends Component {
     }, 5)
   }
 
+  checkLinesCollisions(lines1, lines2) {
+    let error = false
+    lines1.forEach(line => {
+      if (lines2.includes(line)) {
+        console.log('collision detected')
+        error = true
+      }
+    })
+    lines2.forEach(line => {
+      if (lines1.includes(line)) {
+        console.log('collision detected')
+        error = true
+      }
+    })
+    return error
+  }
+
   handleStationClick(stationIndex) {
     if (
       this.state.dragging ||
@@ -138,9 +156,24 @@ class Editor extends Component {
       return
     } else {
       if (this.props.linkMode) {
+        if (
+          this.checkLinesCollisions(
+            this.props.stations[stationIndex].lines,
+            this.props.stations[this.props.linkStation].lines
+          )
+        ) {
+          this.props.showEditorErrorBriefly(
+            'The two stations are on the same line !',
+            3000
+          )
+          this.props.unselect()
+          return
+        }
+
         this.props.linkStations(stationIndex)
         return
       }
+
       stationIndex === this.props.selectedStation
         ? this.props.unselect()
         : this.props.selectStation(stationIndex)
@@ -290,6 +323,7 @@ const mapDispatchToProps = {
   deleteStation,
   linkStations,
   initiateLink,
+  showEditorErrorBriefly,
 }
 
 export default connect(

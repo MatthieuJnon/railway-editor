@@ -107,15 +107,6 @@ const initialMapState = {
   linkStation: -1,
 }
 
-function stateError(state, error) {
-  return {
-    ...state,
-    linkMode: false,
-    selectedStation: -1,
-    error: error,
-  }
-}
-
 function getNewLineId(lines) {
   const possibleIds = ['0', '1', '2', '3', '4', '5']
   const lineKeys = Object.keys(lines)
@@ -227,21 +218,6 @@ function map(state = initialMapState, action) {
     case LINK_STATIONS:
       const station1 = state.stations[state.linkStation]
       const station2 = state.stations[action.stationId]
-
-      let error = false
-      station1.lines.forEach(line => {
-        if (station2.lines.includes(line)) {
-          error = true
-        }
-      })
-      station2.lines.forEach(line => {
-        if (station1.lines.includes(line)) {
-          error = true
-        }
-      })
-      if (error) {
-        return stateError(state, 'The two stations are on the same line')
-      }
 
       const { ['' + action.stationId]: value, ...stations } = state.stations
 
