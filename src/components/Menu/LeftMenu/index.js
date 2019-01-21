@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
+import { loadXml } from 'data/actions'
+
 import { changeScreen } from 'actions'
 
 const Background = styled.div`
@@ -73,10 +75,27 @@ class MainMenu extends Component {
     super(props)
 
     this.handleNewMap = this.handleNewMap.bind(this)
+    this.handleLoadMap = this.handleLoadMap.bind(this)
   }
 
   handleNewMap() {
     this.props.changeScreen('editor')
+  }
+
+  handleLoadMap() {
+    const { dialog } = window.require('electron').remote
+    const importPath = dialog.showOpenDialog({
+      title: 'select map',
+      filters: [
+        {
+          name: 'xml file',
+          extensions: ['xml'],
+        },
+      ],
+      properties: ['openFile'],
+    })
+
+    this.props.loadXml(importPath[0])
   }
 
   render() {
@@ -85,7 +104,7 @@ class MainMenu extends Component {
         <Background />
         <Title>Railway Editor</Title>
         <NewMap onClick={this.handleNewMap}>New map</NewMap>
-        <LoadMap>Load map</LoadMap>
+        <LoadMap onClick={this.handleLoadMap}>Load map</LoadMap>
         <HandleBar />
       </Header>
     )
@@ -98,6 +117,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changeScreen: changeScreen,
+  loadXml,
 }
 
 export default connect(

@@ -10,45 +10,12 @@ import {
   DELETE_STATION,
   INITIATE_LINK,
   LINK_STATIONS,
+  LOAD_MAP,
 } from './actions'
 
 import { exportXml } from './xml'
 
 const linesNames = ['Blue', 'Black', 'Green', 'Orange', 'Purple', 'Yellow']
-
-const allStationsNames = [
-  'Agapanthe',
-  'Bleuet',
-  'Coquelicot',
-  'Dahlia',
-  'Edelweiss',
-  'Ficaire',
-  'Grebera',
-  'Hortensia',
-  'Iris',
-  'Jasmin',
-  'Kalmie',
-  'Lys',
-  'Marguerite',
-  'Narcisse',
-  'Ophrys',
-  'Petunia',
-  'Quinoa',
-  'Renoncule',
-  'Scabieuse',
-  'Tulipe',
-  'Ursinia',
-  'Violet',
-  'Waterlily',
-  'Xeranthemum',
-  'Yarrow',
-  'Zenobia',
-  'Amaranthus',
-  'Begonia',
-  'Cyclamen',
-  'Daphne',
-  'Echinacea',
-]
 
 const initialMapState = {
   lines: {
@@ -203,6 +170,8 @@ function map(state = initialMapState, action) {
         ...state,
         selectedStation: action.stationId,
       }
+    case LOAD_MAP:
+      return action.state
     case UNSELECT:
       return {
         ...state,

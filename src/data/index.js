@@ -21,3 +21,37 @@ export const getSecondaryColors = lineIndex => {
   ]
   return secondaryColors[lineIndex]
 }
+
+export const allStationsNames = [
+  'Agapanthe',
+  'Bleuet',
+  'Coquelicot',
+  'Dahlia',
+  'Edelweiss',
+  'Ficaire',
+  'Grebera',
+  'Hortensia',
+  'Iris',
+  'Jasmin',
+  'Kalmie',
+  'Lys',
+  'Marguerite',
+  'Narcisse',
+  'Ophrys',
+  'Petunia',
+  'Quinoa',
+  'Renoncule',
+  'Scabieuse',
+  'Tulipe',
+  'Ursinia',
+  'Violet',
+  'Waterlily',
+  'Xeranthemum',
+  'Yarrow',
+  'Zenobia',
+  'Amaranthus',
+  'Begonia',
+  'Cyclamen',
+  'Daphne',
+  'Echinacea',
+]

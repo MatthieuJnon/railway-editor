@@ -1,3 +1,5 @@
+import { importXml } from './xml'
+
 export const addStation = () => {
   return {
     type: ADD_STATION,
@@ -82,6 +84,13 @@ export const linkStations = stationId => {
   }
 }
 
+export const loadMap = state => {
+  return {
+    type: LOAD_MAP,
+    state: state,
+  }
+}
+
 export const ADD_STATION_TO_LINE = 'ADD_STATION_TO_LINE'
 export const UPDATE_EDITOR_ERROR = 'UPDATE_EDITOR_ERROR'
 export const UPDATE_LINE_INPUT = 'UPDATE_LINE_INPUT'
@@ -94,10 +103,19 @@ export const ADD_STATION = 'ADD_STATION'
 export const EXPORT_MAP = 'EXPORT_MAP'
 export const UNSELECT = 'UNSELECT'
 export const ADD_LINE = 'ADD_LINE'
+export const LOAD_MAP = 'LOAD_MAP'
 
 export const showEditorErrorBriefly = (error, time) => {
   return dispatch => {
     dispatch(updateEditorError(error))
     setTimeout(() => dispatch(updateEditorError('')), time)
+  }
+}
+
+export const loadXml = path => {
+  return async dispatch => {
+    const newState = await importXml(path)
+
+    // dispatch(loadMap(newState))
   }
 }

@@ -1,4 +1,4 @@
-import xml2js from 'xml2js'
+import xml2js, { parseString } from 'xml2js'
 
 export const exportXml = (map, pathToExportTo) => {
   map = { ...map }
@@ -70,4 +70,37 @@ export const exportXml = (map, pathToExportTo) => {
   const fs = remote.require('fs')
 
   fs.writeFile(pathToExportTo, builder.buildObject(xmlObject), err => {})
+}
+
+export const importXml = async path => {
+  const remote = window.require('electron').remote
+  const fs = remote.require('fs')
+  const util = remote.require('util')
+
+  const readXml = util.promisify(parseString)
+
+  const xmlFile = fs.readFileSync(path, { encoding: 'utf8' })
+
+  const xml = await readXml(xmlFile)
+
+  let state = {
+    lines: {},
+    stations: {},
+    autoIndexLineCounter: 1,
+    autoIndexStationCounter: 1,
+    availableStationName: [],
+    error: '',
+    addStationInput: 1,
+    selectedStation: -1,
+    linkMode: false,
+    linkStation: -1,
+  }
+
+  const stations = xml.map.stations[0].station
+
+  stations.forEach(station => {
+    state.stations[station.name] = {}
+  })
+  const lines = xml.map.lines[0].line
+  console.log(lines)
 }
