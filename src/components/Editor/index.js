@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Draggable from 'react-draggable'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { connect } from 'react-redux'
 
 import {
@@ -62,12 +62,37 @@ const ErrorDisplay = styled.div`
   font-size: 1.2em;
 `
 
+const slideLeft = keyframes`
+  from {
+    transform: translateX(-27px);
+    opacity: 0
+  }
+
+  to {
+    transform: translateX(0px);
+    opacity: 1
+  }
+`
+
+const slideUp = keyframes`
+  from {
+    transform: translateY(27px);
+    opacity: 0
+  }
+
+  to {
+    transform: translateX(0px);
+    opacity: 1
+  }
+`
+
 const CloseStationIcon = styled.div`
   height: 27px;
   width: 27px;
   position: absolute;
   top: ${props => props.top - 40}px;
   left: ${props => props.left}px;
+  animation: ${slideUp} 0.3s ease;
 `
 
 const LinkStationsIcon = styled.div`
@@ -76,6 +101,7 @@ const LinkStationsIcon = styled.div`
   position: absolute;
   top: ${props => props.top}px;
   left: ${props => props.left + 40}px;
+  animation: ${slideLeft} 0.3s ease;
 `
 
 class Editor extends Component {
