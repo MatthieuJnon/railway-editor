@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import map from 'data/reducer'
 import { CHANGE_SCREEN, UPDATE_EDITOR_INFO } from 'actions'
+import { LOAD_MAP } from 'data/actions'
 
 const initialAppState = {
   screen: 'menu',
@@ -28,6 +29,11 @@ function app(state = initialAppState, action) {
       return {
         ...state,
         editorInfo: action.info,
+      }
+    case LOAD_MAP:
+      return {
+        ...state,
+        screen: 'editor',
       }
     default:
       return state

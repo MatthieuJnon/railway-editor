@@ -212,13 +212,6 @@ function map(state = initialMapState, action) {
               ...nState.lines[line],
               order: nState.lines[line].order.map(station => {
                 if (parseInt(station) === parseInt(action.stationId)) {
-                  console.log(
-                    `removing station ${
-                      action.stationId
-                    } from line ${line} and adding station ${
-                      state.linkStation
-                    } in place`
-                  )
                   return state.linkStation
                 }
                 return station

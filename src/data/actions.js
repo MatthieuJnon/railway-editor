@@ -116,6 +116,6 @@ export const loadXml = path => {
   return async dispatch => {
     const newState = await importXml(path)
 
-    // dispatch(loadMap(newState))
+    dispatch(loadMap(newState))
   }
 }

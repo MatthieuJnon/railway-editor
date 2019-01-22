@@ -134,13 +134,11 @@ class Editor extends Component {
     let error = false
     lines1.forEach(line => {
       if (lines2.includes(line)) {
-        console.log('collision detected')
         error = true
       }
     })
     lines2.forEach(line => {
       if (lines1.includes(line)) {
-        console.log('collision detected')
         error = true
       }
     })
@@ -251,7 +249,7 @@ class Editor extends Component {
                   screen !== 'editor' ||
                   (stationIndex !== selectedStation && selectedStation !== -1)
                 }
-                defaultPosition={{
+                position={{
                   x: station.position[0],
                   y: station.position[1],
                 }}

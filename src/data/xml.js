@@ -1,4 +1,5 @@
 import xml2js, { parseString } from 'xml2js'
+import { allStationsNames } from 'data'
 
 export const exportXml = (map, pathToExportTo) => {
   map = { ...map }
@@ -88,7 +89,7 @@ export const importXml = async path => {
     stations: {},
     autoIndexLineCounter: 1,
     autoIndexStationCounter: 1,
-    availableStationName: [],
+    availableStationNames: [],
     error: '',
     addStationInput: 1,
     selectedStation: -1,
@@ -96,11 +97,45 @@ export const importXml = async path => {
     linkStation: -1,
   }
 
+  let allNames = allStationsNames
+
   const stations = xml.map.stations[0].station
 
   stations.forEach(station => {
-    state.stations[station.name] = {}
+    state.stations[station.id[0]] = {
+      name: station.name[0],
+      position: [
+        Math.round(station.position[0].longitude[0] * 10000),
+        Math.round(station.position[0].latitude[0] * 10000),
+      ],
+      lines: station.lines[0].line.map(line => line.$.id),
+    }
+
+    if (station.id >= state.autoIndexStationCounter) {
+      state.autoIndexStationCounter = station.id + 1
+    }
+
+    allNames = allNames.filter(name => {
+      if (name.toLowerCase() === station.name[0].toLowerCase()) {
+        return false
+      }
+      return true
+    })
   })
+
+  state.availableStationNames = allNames
+
   const lines = xml.map.lines[0].line
-  console.log(lines)
+
+  lines.forEach(line => {
+    state.autoIndexLineCounter++
+
+    state.lines[line.id[0]] = {
+      name: line.name[0],
+      id: line.id[0],
+      order: line.stations[0].station.map(station => station.$.id),
+    }
+  })
+
+  return state
 }
