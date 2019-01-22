@@ -27,8 +27,8 @@ export const exportXml = (map, pathToExportTo) => {
       id: stationIndex,
       name: station.name,
       position: {
-        latitude: station.position[1] / 10000,
-        longitude: station.position[0] / 10000,
+        latitude: station.position[1] / 20000,
+        longitude: station.position[0] / 20000,
       },
       lines: {
         line: station.lines.map(id => {
@@ -105,8 +105,8 @@ export const importXml = async path => {
     state.stations[station.id[0]] = {
       name: station.name[0],
       position: [
-        Math.round(station.position[0].longitude[0] * 10000),
-        Math.round(station.position[0].latitude[0] * 10000),
+        Math.round(station.position[0].longitude[0] * 20000),
+        Math.round(station.position[0].latitude[0] * 20000),
       ],
       lines: station.lines[0].line.map(line => line.$.id),
     }
