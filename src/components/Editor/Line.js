@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const CustomLine = styled.line`
-  transition: 'stroke 0.4s ease';
+  transition: stroke 0.4s ease;
 `
 
 class Line extends React.Component {

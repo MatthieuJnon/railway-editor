@@ -33,7 +33,10 @@ const Station = styled.div`
   height: 28px;
   border-radius: 20041997px;
   border: 8px solid ${props => props.color};
-  transition: 'border 0.4s ease';
+  transition: border 0.4s ease;
+  &:hover {
+    top: -1px;
+  }
 `
 
 const EditorSvg = styled.svg`
