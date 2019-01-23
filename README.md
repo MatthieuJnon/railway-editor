@@ -2,6 +2,8 @@
 
 This project was made for college and for Thales Hong Kong, this is a small software to create railway systems for some Thales proprietary software.
 
+## [User guide](user-guide.md) 
+
 ![Main Menu Screenshot](docs/MainMenu.png)
 ![Editor Screen Screenshot](docs/EditorScreen.png)
 
